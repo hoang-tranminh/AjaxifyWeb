@@ -1,0 +1,51 @@
+﻿@using System.Web.Optimization
+@using EPiServer.Framework.Web.Mvc.Html
+@model IPageViewModel<SitePageData>
+<!DOCTYPE html>
+<html lang="@Model.CurrentPage.LanguageBranch">
+    <head>
+        <meta charset="utf-8" />
+        <meta http-equiv="X-UA-Compatible" content="IE=10" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>@Model.CurrentPage.MetaTitle</title>
+        @Html.CanonicalLink()
+        @Html.AlternateLinks()
+        @Styles.Render("~/bundles/css")
+        @Scripts.Render("~/bundles/js")
+        <!--ajaxify-script-->@Html.RequiredClientResources("Header") @*Enable components to require resources. For an example, see the view for VideoBlock.*@
+    </head>
+
+    <body>
+        @Html.RenderEPiServerQuickNavigator()
+        @Html.FullRefreshPropertiesMetaData()
+        <div class="container">
+            @if(!Model.Layout.HideHeader)
+            {
+                Html.RenderPartial("Header", Model);
+            }
+            <div id="content">
+                <script type="text/javascript" src="/Static/js/BigExternalJavascripts.js"></script>
+                <script type="text/javascript" src="/Static/js/SmallExternalJavascripts.js"></script>
+                <script type="text/javascript">
+                    (function () {
+                        var localVariable = "script block 1 executed";
+                        console.log(localVariable);
+                    })();
+                </script>
+                @RenderBody()
+                <script type="text/javascript">
+                    (function () {
+                        var localVariable = "script block 2 executed";
+                        console.log(localVariable);
+                    })();
+                </script>
+            </div>
+            
+            @if(!Model.Layout.HideHeader)
+            {
+                Html.RenderPartial("Footer", Model);
+            }
+        </div>
+        @Html.RequiredClientResources("Footer")
+    </body>
+</html>
